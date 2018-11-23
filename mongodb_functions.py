@@ -28,8 +28,8 @@ def import_tweets(file_path, db_name='tweets', collection_name='tweet_collection
         print("Inserting items...")
         for item in parsed:
             tweets.insert(item)
-
         print(len(parsed), "Tweets have been imported successfully.")
+        return True
     except ConnectionFailure as cf:
         print(cf.__str__())
     except FileNotFoundError as fnf:
@@ -66,25 +66,3 @@ def export_tweets_into_collection(query, projection, to_collection_name, db_name
               projection, "filter.")
     except ConnectionFailure as cf:
         print(cf.__str__())
-
-
-def main():
-    import_tweets("tweets/tweets.json")
-    # select only id, text, user and lang
-    projection = {"_id": 1, "text": 1, "user": 1, "lang": 1}
-
-    # <collection_name> : <language_tag>
-    filter_dict = {
-        'tweets_en': {"lang": "en"},
-        'tweets_sv': {"lang": "sv"},
-        'tweets_da': {"lang": "da"},
-        'tweets_fi': {"lang": "fi"},
-        'tweets_no': {"lang": "no"}
-    }
-
-    for key, val in filter_dict.items():
-        export_tweets_into_collection(val, projection, key)
-
-
-if __name__ == '__main__':
-    main()
