@@ -3,6 +3,13 @@
 
 from mongodb_functions import *
 
+filter_dict = {
+    'tweets_en': {"lang": "en"},
+    'tweets_sv': {"lang": "sv"},
+    'tweets_da': {"lang": "da"},
+    'tweets_fi': {"lang": "fi"},
+    'tweets_no': {"lang": "no"}
+}
 
 def main():
     successfull = import_tweets("tweets/tweets.json")
@@ -11,13 +18,7 @@ def main():
         projection = {"_id": 1, "text": 1, "user": 1, "lang": 1}
 
         # <collection_name> : <language_tag>
-        filter_dict = {
-            'tweets_en': {"lang": "en"},
-            'tweets_sv': {"lang": "sv"},
-            'tweets_da': {"lang": "da"},
-            'tweets_fi': {"lang": "fi"},
-            'tweets_no': {"lang": "no"}
-        }
+
 
         for key, val in filter_dict.items():
             export_tweets_into_collection(val, projection, key)
