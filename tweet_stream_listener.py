@@ -23,7 +23,7 @@ class TweetStreamListener(StreamListener):
         :return:
         """
         try:
-            with open('filepath', 'a', encoding='utf8') as f:
+            with open(self.filepath, 'a', encoding='utf8') as f:
                 json_string = json.dumps(status._json, ensure_ascii=False)  # escaping unicode charachters
                 if self.num_of_tweets != 0:
                     json_string = str(',\n\t' + json_string)
