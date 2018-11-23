@@ -6,9 +6,10 @@ from tweepy import StreamListener
 
 class TweetStreamListener(StreamListener):
 
-    def __init__(self):
+    def __init__(self, filepath):
         super(TweetStreamListener, self).__init__()
-        self.x = 0
+        self.num_of_tweets = 0
+        self.filepath = filepath
 
     def on_status(self, status):
         """
@@ -19,18 +20,18 @@ class TweetStreamListener(StreamListener):
         :return:
         """
         try:
-            with open('tweets/tweets.json', 'a', encoding='utf8') as f:
+            with open('filepath', 'a', encoding='utf8') as f:
                 json_string = json.dumps(status._json, ensure_ascii=False)  # escaping unicode charachters
-                if self.x != 0:
+                if self.num_of_tweets != 0:
                     json_string = str(',\n\t' + json_string)
                 else:
                     json_string = str('\t' + json_string)
                 f.write(json_string)
                 f.flush()
                 os.fsync(f.fileno())
-                self.x += 1
-                if self.x % 10 == 0:
-                    print("Running... ", self.x, " tweets have been saved!")
+                self.num_of_tweets += 1
+                if self.num_of_tweets % 10 == 0:
+                    print("Running...", self.num_of_tweets, "tweets have been saved!")
         # Error handling
         except BaseException as e:
             print("Error on_status: %s", str(e))
