@@ -1,5 +1,9 @@
+#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+
 import matplotlib.pyplot as plt
 import numpy as np
+
 from insert_tweets import filter_dict
 from mongodb_functions import get_count
 
