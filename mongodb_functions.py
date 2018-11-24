@@ -23,7 +23,7 @@ def import_tweets(file_path, db_name='tweets', collection_name='tweet_collection
         print("Opening", collection_name, "collection...")
         tweets = db[collection_name]
         print("Opening", file_path, "...")
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf8') as f:
             parsed = json.loads(f.read())
         print("Inserting items...")
         for item in parsed:

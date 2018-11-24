@@ -1,1 +1,5 @@
 data/*
+tweets
+*.json
+*.bak
+__pycache*
