@@ -1,32 +1,32 @@
 # NLP Project
-### Requirement
+## Requirement
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+## Prerequisites
 
 ```
 MongoDB
 Python environment
 ```
 
-### Installing
-1/ Install MongoDB
+## Installing
+* Install MongoDB
 ```
 Download and install MongoDB Server here: https://www.mongodb.com/
 ```
-2/ Install Python & setup environment
+* Install Python & setup environment
 ```
 pip install requirement.txt
 ```
-3/ Create folders
+* Create folders
 ```
 Create two folder data\db and tweets, run below command to change dbpath of MongoDB
 mongod --dbpath <Absolute path of data\db>
 ```
 
-### Run the project
-## Get the tweet into database & histogram of languages distribution
+## Run the project
+### Get the tweet into database & histogram of languages distribution
 * Import tweets from tweets.json into MongoDB with 
 ```
 python insert_tweets.py
@@ -35,7 +35,7 @@ python insert_tweets.py
 ```
 python draw_bar_plot.py
 ```
-## Translate non-English tweets into English
+### Translate non-English tweets into English
 
 We use Yandex Translate API to translate tweets
 
@@ -43,7 +43,7 @@ We use Yandex Translate API to translate tweets
 python translate_tweets.py
 ```
 
-## Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words. 
+### Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words. 
 
 ```
 ---FILL HERE---
