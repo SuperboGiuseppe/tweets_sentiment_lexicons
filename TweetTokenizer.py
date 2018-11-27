@@ -3,15 +3,16 @@ Nicola Zotto
 
 Step 3: "Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words."
 """
-#import nltk:
-from nltk.tokenize import TweetTokenizer 
+# import nltk:
+from nltk.tokenize import TweetTokenizer
 from nltk.corpus import stopwords
 
-#import custom modules:
-import mongodb_functions as mdb 
+# import custom modules:
+import mongodb_functions as mdb
 import draw_bar_plot as plt
 
-def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, delete_handles=True):
+
+def tokenizer_term_to_count(tweets, case_sensityvity=True, reduced_length=True, delete_handles=True):
     """
     Tokenizes a collection of tweets and counts the appearences of each token.
     :param tweets: a list (or any iterable) containing the tweets to be tokenized and analysed
@@ -21,8 +22,8 @@ def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, 
     :return: a dictionary with a term as key and the number of appearances of the term as value
 
     examples:
-    >>> tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
-    >>> tokenizer_term_to_count(tweets) =={"david":2, "bowey": 2, "is":1, "dead":1, "!":4, "looong":1, "live":1}
+    #>>> tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    #>>> tokenizer_term_to_count(tweets) =={"david":2, "bowey": 2, "is":1, "dead":1, "!":4, "looong":1, "live":1}
     True
     """
     tknzr = TweetTokenizer(preserve_case=case_sensityvity, strip_handles=delete_handles, reduce_len=reduced_length)
@@ -32,6 +33,8 @@ def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, 
         temp = tknzr.tokenize(tw)
         filtered_tweets = [w for w in temp if w not in stopwords.words('english')]
         for token in filtered_tweets:
+            if str(token).find('http') != -1:
+                print(str(token))
             if token in res.keys():
                 res[token] += 1
             else:
@@ -40,15 +43,17 @@ def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, 
 
 
 def main():
-    #tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
-    successfull = import_tweets("tweets/tweets.json")
-    if successfull:
-        projection = {"_id": 0, "text": 1, "user": 0, "lang": 0}
+    # tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    tweets_da = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_da')
+    tweets_fi = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
+    tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_no')
+    tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
 
-    d=tokenizer_term_to_count(tweets)
-    for i in d:
-        print (i, d[i])
+    list_da = [text['translated_text'] for text in tweets_da]
 
-    plt.draw_bar_plot(d, "Term frequency of Tweets", "Terms", "Number of appearences")
+
+    dict = tokenizer_term_to_count(list)
+
+
 
 if __name__ == "__main__": main()

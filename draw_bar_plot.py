@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
+from time import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,7 +10,7 @@ from insert_tweets import filter_dict
 from mongodb_functions import get_count
 
 
-def draw_bar_plot(dictionary, title, x_axis_label, y_axis_label):
+def draw_bar_plot(dictionary, title, x_axis_label, y_axis_label, file_path="{}".format(time())):
     '''
     Draws a bar plot using a dictionary.
     :param dictionary: Values of the dictionary will be the value on the y-axis and the keys of the dictionary will become the labels
@@ -28,7 +30,7 @@ def draw_bar_plot(dictionary, title, x_axis_label, y_axis_label):
     plt.xlabel(x_axis_label, fontweight="bold")
     plt.ylabel(y_axis_label, fontweight="bold")
     plt.grid(axis='y', alpha=0.75)
-    plt.savefig('plots/tweets_per_language.png')
+    plt.savefig("plots/{}".format(file_path))
     plt.show()
 
 
@@ -42,7 +44,7 @@ def main():
         'Norwegian': get_count(collection_names[4])
     }
     print(dictionary.values())
-    draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets")
+    draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets", "tweets_per_language")
 
 
 if __name__ == "__main__": main()
