@@ -3,9 +3,12 @@ Nicola Zotto
 
 Step 3: "Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words."
 """
+#import nltk:
 from nltk.tokenize import TweetTokenizer 
 from nltk.corpus import stopwords
 
+#import custom modules:
+import mongodb_functions as mdb 
 import draw_bar_plot as plt
 
 def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, delete_handles=True):
@@ -37,7 +40,11 @@ def tokenizer_term_to_count(tweets,case_sensityvity=False, reduced_length=True, 
 
 
 def main():
-    tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    #tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    successfull = import_tweets("tweets/tweets.json")
+    if successfull:
+        projection = {"_id": 0, "text": 1, "user": 0, "lang": 0}
+
     d=tokenizer_term_to_count(tweets)
     for i in d:
         print (i, d[i])
