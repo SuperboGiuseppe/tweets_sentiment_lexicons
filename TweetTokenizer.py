@@ -3,9 +3,11 @@ Nicola Zotto
 
 Step 3: "Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words."
 """
+import operator
+
+from nltk.corpus import stopwords
 # import nltk:
 from nltk.tokenize import TweetTokenizer
-from nltk.corpus import stopwords
 
 # import custom modules:
 import mongodb_functions as mdb
@@ -31,10 +33,11 @@ def tokenizer_term_to_count(tweets, case_sensityvity=True, reduced_length=True, 
     temp = []
     for tw in tweets:
         temp = tknzr.tokenize(tw)
-        filtered_tweets = [w for w in temp if w not in stopwords.words('english')]
+        filtered_tweets = [w for w in temp if w.lower() not in stopwords.words('english')]
+
         for token in filtered_tweets:
             if str(token).find('http') != -1:
-                print(str(token))
+                continue
             if token in res.keys():
                 res[token] += 1
             else:
@@ -44,16 +47,29 @@ def tokenizer_term_to_count(tweets, case_sensityvity=True, reduced_length=True, 
 
 def main():
     # tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    tweets_en = mdb.apply_query({}, {'_id': 0, 'text': 1}, collection_name='tweets_en')
     tweets_da = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_da')
     tweets_fi = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
     tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_no')
-    tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
+    tweets_sv = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
 
-    list_da = [text['translated_text'] for text in tweets_da]
+    words_en = [text['text'] for text in tweets_en]
+    words_da = [text['translated_text'] for text in tweets_da]
+    words_fi = [text['translated_text'] for text in tweets_fi]
+    words_no = [text['translated_text'] for text in tweets_no]
+    words_sv = [text['translated_text'] for text in tweets_sv]
 
+    all_words = words_en + words_da + words_fi + words_no + words_sv
 
-    dict = tokenizer_term_to_count(list)
+    d = tokenizer_term_to_count(all_words)
 
+    s = sorted(d.items(), key=operator.itemgetter(1), reverse=True)
+    for value in s:
+        print(value)
+
+    di = dict((x, y) for x, y in s[:20])
+
+    plt.draw_bar_plot(di, 'Name', 'x', 'y', 'name')
 
 
 if __name__ == "__main__": main()

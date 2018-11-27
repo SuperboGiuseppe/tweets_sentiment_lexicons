@@ -27,7 +27,10 @@ def import_tweets(file_path, db_name='tweets', collection_name='tweet_collection
             parsed = json.loads(f.read())
         print("Inserting items...")
         for item in parsed:
-            tweets.insert(item)
+            try:
+                tweets.insert(item)
+            except pymongo.errors.DuplicateKeyError:
+                continue
         print(len(parsed), "Tweets have been imported successfully.")
         return True
     except ConnectionFailure as cf:
@@ -61,7 +64,10 @@ def export_tweets_into_collection(filter, projection, to_collection_name, db_nam
         tweets_to = db[to_collection_name]
         print("Inserting items...")
         for item in data:
-            tweets_to.insert(item)
+            try:
+                tweets_to.insert(item)
+            except pymongo.errors.DuplicateKeyError:
+                continue
         print("Tweets have been exported from", from_collection_name, "to", to_collection_name, "with", filter,
               projection, "filter.")
     except ConnectionFailure as cf:
@@ -83,7 +89,6 @@ def get_count(collection_name, db_name='tweets'):
 
 def apply_query(filter, projection, collection_name, db_name='tweets'):
     """
-
     :param filter: filter to be applied to the collection
     :param projection: projection to be applied to the collection
     :param collection_name: collection to be opened

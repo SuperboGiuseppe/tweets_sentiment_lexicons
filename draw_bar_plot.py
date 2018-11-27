@@ -44,7 +44,8 @@ def main():
         'Norwegian': get_count(collection_names[4])
     }
     print(dictionary.values())
-    draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets", "tweets_per_language")
+    draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets",
+                  "tweets_per_language")
 
 
 if __name__ == "__main__": main()

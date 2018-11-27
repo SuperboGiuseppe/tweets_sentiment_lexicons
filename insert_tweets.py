@@ -11,6 +11,7 @@ filter_dict = {
     'tweets_no': {"lang": "no"}
 }
 
+
 def main():
     successfull = import_tweets("tweets/tweets.json")
     if successfull:
@@ -18,7 +19,6 @@ def main():
         projection = {"_id": 1, "text": 1, "user": 1, "lang": 1}
 
         # <collection_name> : <language_tag>
-
 
         for key, val in filter_dict.items():
             export_tweets_into_collection(val, projection, key)

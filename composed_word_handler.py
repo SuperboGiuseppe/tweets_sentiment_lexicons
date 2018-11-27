@@ -1,7 +1,8 @@
-from nltk.tokenize import MWETokenizer
-from nltk import Tree
 from nltk import RegexpParser
+from nltk import Tree
 from nltk import pos_tag
+from nltk.tokenize import MWETokenizer
+
 
 def extract_phrases(my_tree, phrase):
     my_phrases = []
@@ -13,9 +14,8 @@ def extract_phrases(my_tree, phrase):
             list_of_phrases = extract_phrases(child, phrase)
             if len(list_of_phrases) > 0:
                 my_phrases.extend(list_of_phrases)
-                #print(my_phrases)
+                # print(my_phrases)
     return my_phrases
-
 
 
 def retrieve_composedword():
@@ -28,7 +28,6 @@ def retrieve_composedword():
     res = []
     for x in sentences:
 
-
         sentence = pos_tag(x.split())
         tree = cp.parse(sentence)
 
@@ -39,6 +38,7 @@ def retrieve_composedword():
             res.append(temp)
     return res
 
+
 def composedword_handler():
     tokenizer = MWETokenizer(retrieve_composedword())
     sentences = ["President of the United States of America",
@@ -47,4 +47,3 @@ def composedword_handler():
     print(tokenizer.tokenize(sentences[0].split()))
     print(tokenizer.tokenize(sentences[1].split()))
     print(tokenizer.tokenize(sentences[2].split()))
-
