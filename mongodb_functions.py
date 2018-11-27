@@ -79,3 +79,27 @@ def get_count(collection_name, db_name='tweets'):
         return tweet_collection.count()
     except ConnectionFailure as cf:
         print(cf.__str__())
+
+
+def apply_query(filter, projection, collection_name, db_name='tweets'):
+    """
+
+    :param filter: filter to be applied to the collection
+    :param projection: projection to be applied to the collection
+    :param collection_name: collection to be opened
+    :param db_name: database to be connected to
+    :return: query result
+    """
+    if filter is not None and projection is not None:
+        try:
+            print("Connecting to MongoDB...")
+            connection = pymongo.MongoClient("mongodb://localhost")
+            print("Connecting to", db_name, "database...")
+            db = connection[db_name]
+            print("Opening", collection_name, "collection...")
+            collection = db[collection_name]
+            data = collection.find(filter, projection)
+            print("Tweets have been filtered from", collection_name, "with", filter, projection, "filter.")
+            return data
+        except ConnectionFailure as cf:
+            print(cf.__str__())
