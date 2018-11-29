@@ -3,10 +3,11 @@
 
 import csv
 
+
 def read_sentistrength_file(file_name):
     with open(file_name, 'r', encoding='utf-8') as result_file:
         reader = csv.reader(result_file, delimiter='\t')
-        #headers = next(reader, None)
+        # headers = next(reader, None)
         next(reader)
         negative = 0
         positive = 0
@@ -27,5 +28,6 @@ def main():
     print(pos)
     print('Negative Value:')
     print(neg)
+
 
 if __name__ == "__main__": main()

@@ -74,7 +74,13 @@ def export_tweets_into_collection(filter, projection, to_collection_name, db_nam
         print(cf.__str__())
 
 
-def get_count(collection_name, db_name='tweets'):
+def get_count(collection_name, filter={}, db_name='tweets'):
+    """
+    :param collection_name: collection to be opened
+    :param filter: filter to be applied to the collection
+    :param db_name: database to be connected to
+    :return: number of elements in the collection
+    """
     try:
         print("Connecting to MongoDB...")
         connection = pymongo.MongoClient("mongodb://localhost:20000")
@@ -82,7 +88,7 @@ def get_count(collection_name, db_name='tweets'):
         db = connection[db_name]
         print("Opening", collection_name, "collection...")
         tweet_collection = db[collection_name]
-        return tweet_collection.count()
+        return tweet_collection.find(filter).count()
     except ConnectionFailure as cf:
         print(cf.__str__())
 
@@ -104,7 +110,27 @@ def apply_query(filter, projection, collection_name, db_name='tweets'):
             print("Opening", collection_name, "collection...")
             collection = db[collection_name]
             data = collection.find(filter, projection)
-            print("Tweets have been filtered from", collection_name, "with", filter, projection, "filter. Number of keys: ", data.count())
+            print("Tweets have been filtered from", collection_name, "with", filter, projection,
+                  "filter. Number of keys: ", data.count())
             return data
         except ConnectionFailure as cf:
             print(cf.__str__())
+
+
+def open_collection(collection_name, db_name='tweets'):
+    """
+    Opens and returns passed collection in passed database
+    :param collection_name: collection to be opened
+    :param db_name: database to be connected to
+    :return: collection
+    """
+    try:
+        print("Connecting to MongoDB...")
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
+        print("Connecting to", db_name, "database...")
+        db = connection[db_name]
+        print("Opening", collection_name, "collection...")
+        collection = db[collection_name]
+        return collection
+    except ConnectionFailure as cf:
+        print(cf.__str__())
