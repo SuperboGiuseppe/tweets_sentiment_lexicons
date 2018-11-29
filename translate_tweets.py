@@ -17,24 +17,16 @@ def translate_database(db_name='tweets'):
     try:
         # Translate tweet - English
         for tweet in tweets_da.find():
-            tweets_da.update({"_id": tweet["_id"]},
-                             {"text": tweet["text"], "lang": tweet["lang"], "user": tweet["user"],
-                              "translated_text": translate_tweets(tweet["text"])})
+            tweets_da.update({"_id": tweet["_id"]}, {'$set': {"translated_text": translate_tweets(tweet["text"])}})
         print("Tweets DA translated")
         for tweet in tweets_fi.find():
-            tweets_fi.update({"_id": tweet["_id"]},
-                             {"text": tweet["text"], "lang": tweet["lang"], "user": tweet["user"],
-                              "translated_text": translate_tweets(tweet["text"])})
+            tweets_fi.update({"_id": tweet["_id"]}, {'$set': {"translated_text": translate_tweets(tweet["text"])}})
         print("Tweets FI translated")
         for tweet in tweets_no.find():
-            tweets_no.update({"_id": tweet["_id"]},
-                             {"text": tweet["text"], "lang": tweet["lang"], "user": tweet["user"],
-                              "translated_text": translate_tweets(tweet["text"])})
+            tweets_no.update({"_id": tweet["_id"]}, {'$set': {"translated_text": translate_tweets(tweet["text"])}})
         print("Tweets NO translated")
         for tweet in tweets_sv.find():
-            tweets_sv.update({"_id": tweet["_id"]},
-                             {"text": tweet["text"], "lang": tweet["lang"], "user": tweet["user"],
-                              "translated_text": translate_tweets(tweet["text"])})
+            tweets_sv.update({"_id": tweet["_id"]}, {'$set': {"translated_text": translate_tweets(tweet["text"])}})
         print("Tweets SV translated")
     except ValueError:
         print(ValueError)

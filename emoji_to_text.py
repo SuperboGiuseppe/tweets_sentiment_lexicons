@@ -5,6 +5,8 @@ import emoji
 import pymongo
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
+import mongodb_functions as mdb
+
 with open('emojis.txt', 'r') as f:
     try:
         print("Connecting to MongoDB...")
@@ -29,6 +31,11 @@ with open('emojis.txt', 'r') as f:
 
 
 def demojize(text):
+    """
+    Convert all emojis in the passed string in text format (i.e. :emoji:)
+    :param text: string to be demojized
+    :return: demojized string
+    """
     if text is not None:
         try:
             emoji_text = emoji.demojize(text)
@@ -36,3 +43,20 @@ def demojize(text):
             print(e)
             return False
         return emoji_text
+
+
+def main():
+    from insert_tweets import filter_dict
+    collection_names = [key for key in filter_dict.keys()]
+    for collection_name in collection_names:
+        collection = mdb.open_collection(collection_name)
+        if collection_name == 'tweets_en':
+            tweets = collection.find({}, {'_id': 1, 'text': 1})
+        else:
+            tweets = collection.find({}, {'_id': 1, 'translated_text': 1})
+        for tweet in tweets:
+            demojized_text = demojize(list(dict(tweet).values())[1])
+            collection.update({'_id': tweet['_id']}, {'$set': {'demojized_text': demojized_text}})
+
+
+if __name__ == "__main__": main()

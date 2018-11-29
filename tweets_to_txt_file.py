@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
-import mongodb_functions as mdb
-from mongodb_functions import apply_query
 import csv
+from mongodb_functions import apply_query
+import mongodb_functions as mdb
+
 
 def tweets_to_txt_file(tweet_cursor, file_name, fields):
     with open(file_name, "w+", encoding='utf-8') as file:
