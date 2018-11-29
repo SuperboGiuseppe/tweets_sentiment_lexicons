@@ -17,7 +17,7 @@ def import_tweets(file_path, db_name='tweets', collection_name='tweet_collection
     """
     try:
         print("Connecting to MongoDB...")
-        connection = pymongo.MongoClient("mongodb://localhost")
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
         print("Connecting to", db_name, "database...")
         db = connection[db_name]
         print("Opening", collection_name, "collection...")
@@ -54,7 +54,7 @@ def export_tweets_into_collection(filter, projection, to_collection_name, db_nam
     """
     try:
         print("Connecting to MongoDB...")
-        connection = pymongo.MongoClient("mongodb://localhost")
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
         print("Connecting to", db_name, "database...")
         db = connection[db_name]
         print("Opening", from_collection_name, "collection...")
@@ -77,7 +77,7 @@ def export_tweets_into_collection(filter, projection, to_collection_name, db_nam
 def get_count(collection_name, db_name='tweets'):
     try:
         print("Connecting to MongoDB...")
-        connection = pymongo.MongoClient("mongodb://localhost")
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
         print("Connecting to", db_name, "database...")
         db = connection[db_name]
         print("Opening", collection_name, "collection...")
@@ -98,13 +98,13 @@ def apply_query(filter, projection, collection_name, db_name='tweets'):
     if filter is not None and projection is not None:
         try:
             print("Connecting to MongoDB...")
-            connection = pymongo.MongoClient("mongodb://localhost")
+            connection = pymongo.MongoClient("mongodb://localhost:20000")
             print("Connecting to", db_name, "database...")
             db = connection[db_name]
             print("Opening", collection_name, "collection...")
             collection = db[collection_name]
             data = collection.find(filter, projection)
-            print("Tweets have been filtered from", collection_name, "with", filter, projection, "filter.")
+            print("Tweets have been filtered from", collection_name, "with", filter, projection, "filter. Number of keys: ", data.count())
             return data
         except ConnectionFailure as cf:
             print(cf.__str__())

@@ -8,7 +8,7 @@ def translate_tweets(text):
 
 
 def translate_database(db_name='tweets'):
-    connection = pymongo.MongoClient("mongodb://localhost")
+    connection = pymongo.MongoClient("mongodb://localhost:20000")
     db = connection[db_name]
     tweets_da = db['tweets_da']
     tweets_fi = db['tweets_fi']

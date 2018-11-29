@@ -8,7 +8,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 with open('emojis.txt', 'r') as f:
     try:
         print("Connecting to MongoDB...")
-        connection = pymongo.MongoClient("mongodb://localhost")
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
         print("Connecting to", 'tweets', "database...")
         db = connection['tweets']
         print("Opening", 'emojis', "collection...")
