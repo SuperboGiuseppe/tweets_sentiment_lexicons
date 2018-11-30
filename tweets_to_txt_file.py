@@ -16,17 +16,18 @@ def tweets_to_txt_file(tweet_cursor, file_name, fields):
 
 
 def main():
-    tweets_en = mdb.apply_query({}, {'_id': 1, 'text': 1}, collection_name='tweets_en')
-    tweets_da = mdb.apply_query({}, {'_id': 1, 'translated_text': 1}, collection_name='tweets_da')
-    tweets_fi = mdb.apply_query({}, {'_id': 1, 'translated_text': 1}, collection_name='tweets_fi')
-    tweets_no = mdb.apply_query({}, {'_id': 1, 'translated_text': 1}, collection_name='tweets_no')
-    tweets_sv = mdb.apply_query({}, {'_id': 1, 'translated_text': 1}, collection_name='tweets_sv')
+    tweets_en = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_en')
+    tweets_da = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_da')
+    tweets_fi = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_fi')
+    tweets_no = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_no')
+    tweets_sv = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_sv')
 
-    tweets_to_txt_file(tweets_en, 'textfiles/tweets_en.txt', ['_id', 'text'])
-    tweets_to_txt_file(tweets_da, 'textfiles/tweets_da.txt', ['_id', 'translated_text'])
-    tweets_to_txt_file(tweets_fi, 'textfiles/tweets_fi.txt', ['_id', 'translated_text'])
-    tweets_to_txt_file(tweets_no, 'textfiles/tweets_no.txt', ['_id', 'translated_text'])
-    tweets_to_txt_file(tweets_sv, 'textfiles/tweets_sv.txt', ['_id', 'translated_text'])
+    tweets_to_txt_file(tweets_en, 'textfiles/tweets_en.txt', ['_id', 'demojized_text'])
+    tweets_to_txt_file(tweets_da, 'textfiles/tweets_da.txt', ['_id', 'demojized_text'])
+    tweets_to_txt_file(tweets_fi, 'textfiles/tweets_fi.txt', ['_id', 'demojized_text'])
+    tweets_to_txt_file(tweets_no, 'textfiles/tweets_no.txt', ['_id', 'demojized_text'])
+    tweets_to_txt_file(tweets_sv, 'textfiles/tweets_sv.txt', ['_id', 'demojized_text'])
 
 
 if __name__ == "__main__": main()
+
