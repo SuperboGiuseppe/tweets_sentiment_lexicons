@@ -51,12 +51,12 @@ def draw_bar_plot(dictionary, title, x_axis_label, y_axis_label, file_name_forma
 def main():
     collection_names = [key for key in filter_dict.keys()]
     # filter for the bots
-    filter_fi = {'$or': [{'user.id': 550261599}, {'user.id': 2831214083}]}
+    bots_fi = {'$or': [{'user.id': 550261599}, {'user.id': 2831214083}]}
     dictionary = {
         'English': (get_count(collection_names[0]), 0),
         'Swedish': (get_count(collection_names[1]), 0),
         'Danish': (get_count(collection_names[2]), 0),
-        'Finnish': (get_count(collection_names[3]), get_count(collection_names[3], filter=filter_fi)),
+        'Finnish': (get_count(collection_names[3]), get_count(collection_names[3], filter=bots_fi)),
         'Norwegian': (get_count(collection_names[4]), 0)
     }
     print(dictionary.values())

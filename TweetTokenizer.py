@@ -45,7 +45,7 @@ def tokenizer_term_to_count(tweets, case_sensityvity=True, reduced_length=True, 
         for token in filtered_tweets:
             if str(token).find('http') != -1:
                 continue
-                # Variation Selector(\uFE0F)
+            #                                                    Variation Selector(\uFE0F)
             if remove_punctuation(token) == "" or token in punctuation or token == '\uFE0F':
                 continue
             emoji = emojis.find_one({'emoji': token}, {'_id': 0, 'emoji_text': 1})
@@ -59,11 +59,11 @@ def tokenizer_term_to_count(tweets, case_sensityvity=True, reduced_length=True, 
 
 
 def main():
-    ##    tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
-    filter_fi = {'$nor': [{'user.id': 3291286474}, {'user.id': 2831214083}]}
+    #    tweets = ["David Bowey is dead !!!!!!!!!!!!", "@A_Name LOOOOng live David bowey !"]
+    bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}]}
     tweets_en = mdb.apply_query({}, {'_id': 0, 'text': 1}, collection_name='tweets_en')
     tweets_da = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_da')
-    tweets_fi = mdb.apply_query(filter_fi, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
+    tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
     tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_no')
     tweets_sv = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
 
