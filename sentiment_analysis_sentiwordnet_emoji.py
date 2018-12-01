@@ -152,8 +152,6 @@ def create_senti_emoji_dict():
 	scores_dict.update(emojiDict);
 	return scores_dict
 
-#this function is not called because the tweets have already been collected but was called when running the cron job ran
-#collect the tweets with a keyword(company name)
 
 def clean_tweet(tweet):
 	new_tweet = re.sub(r"http\S+", "", tweet)
@@ -199,27 +197,7 @@ def sentimentAnalysis(tweet_list, scores_dict):
 
 	return tweet_score
 
-#computes the final score by summing the tweets and normalizing
-def scoreTweets(all_tweets_scores):
-	max_abs_val = math.fabs(all_tweets_scores[0])
-	for num in range(1, len(all_tweets_scores)):
-		if math.fabs(all_tweets_scores[num]) > max_abs_val:
-			max_abs_val = math.fabs(all_tweets_scores[num])
-
-	total_score = 0.0
-	for each_tweet_score in all_tweets_scores:
-		if float(max_abs_val) > 0:
-			total_score = total_score + (float(each_tweet_score)/float(max_abs_val))
-	total_score_avg = float(total_score)/float(len(all_tweets_scores))
-
-	#return the percent value
-	return total_score_avg
-
 def main(db_name='tweets'):
-
-	#this path should have txt files for tweets of all of one company
-
-	#create the sentiment dictionary using sentiwordnet
 	scores_dict = create_senti_emoji_dict()
 	connection = pymongo.MongoClient("mongodb://localhost:20000")
 	db = connection[db_name]
@@ -251,10 +229,6 @@ def main(db_name='tweets'):
 			tweets_sv.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
 	except ValueError:
 		print(ValueError)
-
-	#iterate through all the files in the directory
-
-
 
 if __name__ == '__main__':
 	main()
