@@ -4,6 +4,7 @@ from unidecode import unidecode
 import math
 import csv
 import pymongo
+import emoji
 # Source: http://stackoverflow.com/questions/19790188/expanding-english-language-contractions-in-python
 # Contractions to be used in tokenizer for possessives
 contractions = {
@@ -128,7 +129,19 @@ contractions = {
 
 tweet_text = dict()
 
-
+def demojize(text):
+    """
+    Convert all emojis in the passed string in text format (i.e. :emoji:)
+    :param text: string to be demojized
+    :return: demojized string
+    """
+    if text is not None:
+        try:
+            emoji_text = emoji.demojize(text)
+        except Exception as e:
+            print(e)
+            return False
+        return emoji_text
 #read SentiWordNet
 def create_senti_emoji_dict():
 	scores_file = open("SentiWordNet.txt", "r")
@@ -148,7 +161,7 @@ def create_senti_emoji_dict():
 
 	#add emoji scores to the dictionary
 	for row in reader:
-		emojiDict[row[0]] = row[1]
+		emojiDict.update({row[0]:float(row[1])})
 	scores_dict.update(emojiDict);
 	return scores_dict
 
@@ -163,11 +176,8 @@ def clean_tweet(tweet):
 def tokenizeText(line, wordNet_dict):
 	words = line.strip().split()
 	tmplist = list()
+	returnList = list()
 	for word in words:
-		try:
-			word = unidecode(word)
-		except:
-			pass
 		if "'" in word:
 			if word in contractions:
 				expansion = contractions[word]
@@ -182,7 +192,9 @@ def tokenizeText(line, wordNet_dict):
 		tmp_words = tmp_words.translate(replace_punctuation)
 		tmp_word = tmp_words.split()
 		final_tokenized_list.extend(tmp_word)
-	return final_tokenized_list
+	for token in final_tokenized_list:
+		returnList.append(demojize(token))
+	return returnList
 
 #returns the score of one tweet
 def sentimentAnalysis(tweet_list, scores_dict):
