@@ -62,6 +62,8 @@ def main():
     print(dictionary.values())
     draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets",
                   "tweets_per_language.svg")
+    draw_bar_plot(dictionary, "Distribution of Tweets in Several Languages", "Language", "Number of Tweets",
+                  "tweets_per_language.png")
 
 
 if __name__ == "__main__": main()
