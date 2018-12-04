@@ -55,7 +55,8 @@ def main():
 
     ## What do we do with it now? a plot?
 
-    for i in result:
-        print(i, result[i])
+    print("positive tweets: ", len(pos_tweets))
+    print("neutral tweets: ", len(neu_tweets))
+    print("negative tweets: ", len(neg_tweets))
     
 if __name__ == "__main__": main()
