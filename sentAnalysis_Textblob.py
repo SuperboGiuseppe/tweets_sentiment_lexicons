@@ -23,15 +23,15 @@ def get_tweet_sentiment(tweet):
     """ 
     Classifies sentiment of a single tweet using textblob's sentiment method 
     :param tweet: a non-tokenized tweets.
-    :return: the perceived sentiment of the inputed tweet
+    :return: a tuple, the sentiment score and the perceived sentiment of the inputed tweet
     """
     tweetblob = tb.TextBlob(tweet)
     if tweetblob.sentiment.polarity > 0:
-        return 'positive'
+        return (tweetblob.sentiment.polarity, 'positive')
     elif tweetblob.sentiment.polarity == 0:
-        return 'neutral'
+        return (tweetblob.sentiment.polarity, 'neutral')
     else:
-        return 'negative'
+        return (tweetblob.sentiment.polarity, 'negative')
 
 
 def main():
@@ -51,42 +51,65 @@ def main():
 
     ## english:
     result = create_dictionary(words_en)
-    pos_tweets_en = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_en = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_en = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_en = 0
+    for i in result:
+        mean_en += i[tweet][0]
+    mean_en = mean_en/len(result)
+    pos_tweets_en = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_en = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_en = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## danish:
     result = create_dictionary(words_da)
-    pos_tweets_da = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_da = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_da = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_da = 0
+    for i in result:
+        mean_da += i[tweet][0]
+    mean_da = mean_da/len(result)
+    pos_tweets_da = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_da = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_da = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## finnish:
     result = create_dictionary(words_fi)
-    pos_tweets_fi = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_fi = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_fi = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_fi = 0
+    for i in result:
+        mean_fi += i[tweet][0]
+    mean_fi = mean_fi/len(result)
+    pos_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## norvegian:
     result = create_dictionary(words_no)
-    pos_tweets_no = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_no = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_no = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_no = 0
+    for i in result:
+        mean_no += i[tweet][0]
+    mean_no = mean_no/len(result)
+    pos_tweets_no = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_no = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_no = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## swedish:
     result = create_dictionary(words_sv)
-    pos_tweets_sv = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_sv = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_sv = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_sw = 0
+    for i in result:
+        mean_sw += i[tweet][0]
+    mean_sw = mean_sw/len(result)
+    pos_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## all languages:
     result = create_dictionary(all_words)
-    pos_tweets_global = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets_global = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets_global = [tweet for tweet in result if result[tweet] == 'negative']
+    mean_global = 0
+    for i in result:
+        mean_global += i[tweet][0]
+    mean_global = mean_global/len(result)
+    pos_tweets_global = [tweet for tweet in result if result[tweet][1] == 'positive']
+    neu_tweets_global = [tweet for tweet in result if result[tweet][1] == 'neutral']
+    neg_tweets_global = [tweet for tweet in result if result[tweet][1] == 'negative']
 
-    ## What do we do with it now? a plot?
-
+    ## printing the results:
     print("positive tweets percentage:")
     print("all languages: ", len(pos_tweets_global) / len(all_words), "english: ", len(pos_tweets_en) / len(words_en),
           "danish: ", len(pos_tweets_da) / len(words_da), "finnish: ", len(pos_tweets_fi) / len(words_fi),
@@ -99,6 +122,13 @@ def main():
     print("all languages: ", len(neg_tweets_global) / len(all_words), "english: ", len(neg_tweets_en) / len(words_en),
           "danish: ", len(neg_tweets_da) / len(words_da), "finnish: ", len(neg_tweets_fi) / len(words_fi),
           "norvegian: ", len(neg_tweets_no) / len(words_no), "swedish: ", len(neg_tweets_sv) / len(words_sv))
-
-
+    print()
+    print("average scores by language:")
+    print("global score: ", mean_global)
+    print("english score: ", mean_en)
+    print("danish score: ", mean_da)
+    print("finnish score: ", mean_fi)
+    print("norvegian score: ", mean_no)
+    print("swedish score: ", mean_sw)
+    
 if __name__ == "__main__": main()
