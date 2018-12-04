@@ -5,12 +5,12 @@ from nltk import pos_tag
 import mongodb_functions as mdb
 import wordninja
 
-
 """
 Giuseppe Superbo
 
 Step 6.1: Use MWETokenizer in order to handle composed words
 """
+
 
 def extract_phrases(my_tree, phrase):
     """
@@ -29,9 +29,8 @@ def extract_phrases(my_tree, phrase):
             list_of_phrases = extract_phrases(child, phrase)
             if len(list_of_phrases) > 0:
                 my_phrases.extend(list_of_phrases)
-                #print(my_phrases)
+                # print(my_phrases)
     return my_phrases
-
 
 
 def retrieve_composedword(corpus):
@@ -54,6 +53,7 @@ def retrieve_composedword(corpus):
             res.append(temp)
     return res
 
+
 def composedword_handler(corpus_cursor, field):
     """
     Extract corpus from the DB of tweets and create a lexicon of composed words from it. MWETokenizer is going
@@ -68,26 +68,27 @@ def composedword_handler(corpus_cursor, field):
     res = []
     tokenizer = MWETokenizer(retrieve_composedword(corpus))
     for x in range(len(corpus)):
-        #print(tokenizer.tokenize(corpus[x].split()))
+        # print(tokenizer.tokenize(corpus[x].split()))
         temp = tokenizer.tokenize(corpus[x].split())
         temp2 = temp.copy()
         x = 0
         for y in range(len(temp)):
             if temp[y][0] == '@':
                 del temp2[x]
-                x = x-1
+                x = x - 1
             if temp[y][0] == '#':
                 del temp2[x]
-                temp2[x:x]= wordninja.split(temp[y])
+                temp2[x:x] = wordninja.split(temp[y])
                 x += len(wordninja.split(temp[y])) - 1
             if str(temp[y]).find('http') != -1:
                 del temp2[x]
-                x = x-1
-            #print(temp2)
+                x = x - 1
+            # print(temp2)
             x += 1
-        #print(temp2)
+        # print(temp2)
         res.append(temp2)
     return res
+
 
 def ID_extractor(cursor_ID):
     res = []
@@ -96,22 +97,24 @@ def ID_extractor(cursor_ID):
         res.append(subVal['_id'])
     return res
 
+
 def update_database(ListID, List_Tokens, collection_name):
     collection = mdb.open_collection(collection_name, 'tweets')
     for x in range(len(ListID)):
         collection.update({'_id': ListID[x]}, {'$set': {'tokenized_text_MWETokenizer': List_Tokens[x]}})
 
+
 def main():
-    corpus_cursor_en = mdb.apply_query({}, {'_id': 0, 'text': 1}, collection_name='tweets_en')
-    corpus_cursor_da = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_da')
-    corpus_cursor_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_no')
-    corpus_cursor_fi = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
-    corpus_cursor_sv = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
-    tokenized_tweets_en = composedword_handler(corpus_cursor_en, 'text')
-    tokenized_tweets_da = composedword_handler(corpus_cursor_da, 'translated_text')
-    tokenized_tweets_no = composedword_handler(corpus_cursor_no, 'translated_text')
-    tokenized_tweets_fi = composedword_handler(corpus_cursor_fi, 'translated_text')
-    tokenized_tweets_sv = composedword_handler(corpus_cursor_sv, 'translated_text')
+    corpus_cursor_en = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_en')
+    corpus_cursor_da = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_da')
+    corpus_cursor_no = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_no')
+    corpus_cursor_fi = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_fi')
+    corpus_cursor_sv = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_sv')
+    tokenized_tweets_en = composedword_handler(corpus_cursor_en, 'demojized_text')
+    tokenized_tweets_da = composedword_handler(corpus_cursor_da, 'demojized_text')
+    tokenized_tweets_no = composedword_handler(corpus_cursor_no, 'demojized_text')
+    tokenized_tweets_fi = composedword_handler(corpus_cursor_fi, 'demojized_text')
+    tokenized_tweets_sv = composedword_handler(corpus_cursor_sv, 'demojized_text')
     ID_cursor_en = mdb.apply_query({}, {'_id': 1}, collection_name='tweets_en')
     ID_cursor_da = mdb.apply_query({}, {'_id': 1}, collection_name='tweets_da')
     ID_cursor_sv = mdb.apply_query({}, {'_id': 1}, collection_name='tweets_sv')
@@ -127,3 +130,7 @@ def main():
     update_database(ListID_fi, tokenized_tweets_fi, 'tweets_fi')
     update_database(ListID_no, tokenized_tweets_no, 'tweets_no')
     update_database(ListID_sv, tokenized_tweets_sv, 'tweets_sv')
+
+
+if __name__ == '__main__':
+    main()

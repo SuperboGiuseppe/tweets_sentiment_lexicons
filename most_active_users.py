@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
+__author__ = "Emre Arkan"
+__copyright__ = "Copyright 2018, Project for Natural Language Processing and Text Mining, University of Oulu"
+
 import operator
 
 import mongodb_functions as mdb
@@ -34,7 +37,8 @@ def main():
     for collection_name in collection_names:
         if collection_name == 'tweets_fi':
             users = find_x_most_active_users(collection_name, num_of_users=num_of_users,
-                                             filter={'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}]}
+                                             filter={'$nor': [{'user.id': 550261599}, {'user.id': 2831214083},
+                                                              {'user.id': 3291286474}]}
                                              )
         else:
             users = find_x_most_active_users(collection_name, num_of_users=num_of_users)

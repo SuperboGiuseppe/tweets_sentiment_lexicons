@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
+__author__ = "Emre Arkan"
+__copyright__ = "Copyright 2018, Project for Natural Language Processing and Text Mining, University of Oulu"
+
 import json
 import os
 

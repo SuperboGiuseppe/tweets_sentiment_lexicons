@@ -3,7 +3,6 @@
 
 import csv
 from mongodb_functions import apply_query
-import mongodb_functions as mdb
 
 
 def tweets_to_txt_file(tweet_cursor, file_name, fields):
@@ -16,11 +15,12 @@ def tweets_to_txt_file(tweet_cursor, file_name, fields):
 
 
 def main():
-    tweets_en = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_en')
-    tweets_da = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_da')
-    tweets_fi = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_fi')
-    tweets_no = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_no')
-    tweets_sv = mdb.apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_sv')
+    # bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}, 'user.id': 3291286474}]}
+    tweets_en = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_en')
+    tweets_da = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_da')
+    tweets_fi = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_fi')
+    tweets_no = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_no')
+    tweets_sv = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_sv')
 
     tweets_to_txt_file(tweets_en, 'textfiles/tweets_en.txt', ['_id', 'demojized_text'])
     tweets_to_txt_file(tweets_da, 'textfiles/tweets_da.txt', ['_id', 'demojized_text'])
@@ -30,4 +30,3 @@ def main():
 
 
 if __name__ == "__main__": main()
-
