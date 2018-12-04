@@ -32,31 +32,63 @@ def get_tweet_sentiment(tweet):
 
 def main():
 
-    bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}]}
-    tweets_en = mdb.apply_query({}, {'_id': 0, 'text': 1}, collection_name='tweets_en')
-    tweets_da = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_da')
-    tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'translated_text': 1}, collection_name='tweets_fi')
-    tweets_no = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_no')
-    tweets_sv = mdb.apply_query({}, {'_id': 0, 'translated_text': 1}, collection_name='tweets_sv')
+    #bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}]}
+    tweets_en = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_en')
+    tweets_da = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_da')
+    tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_fi')
+    tweets_no = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_no')
+    tweets_sv = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_sv')
 
-    words_en = [text['text'] for text in tweets_en]
-    words_da = [text['translated_text'] for text in tweets_da]
-    words_fi = [text['translated_text'] for text in tweets_fi]
-    words_no = [text['translated_text'] for text in tweets_no]
-    words_sv = [text['translated_text'] for text in tweets_sv]
-
+    words_en = [text['demojized_text'] for text in tweets_en]
+    words_da = [text['demojized_text'] for text in tweets_da]
+    words_fi = [text['demojized_text'] for text in tweets_fi]
+    words_no = [text['demojized_text'] for text in tweets_no]
+    words_sv = [text['demojized_text'] for text in tweets_sv]
     all_words = words_en + words_da + words_fi + words_no + words_sv
 
-    result = create_dictionary(all_words)
+    ## english:
+    result = create_dictionary(words_en)
+    pos_tweets_en = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_en = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_en = [tweet for tweet in result if result[tweet] == 'negative']
     
-    pos_tweets = [tweet for tweet in result if result[tweet] == 'positive']
-    neu_tweets = [tweet for tweet in result if result[tweet] == 'neutral']
-    neg_tweets = [tweet for tweet in result if result[tweet] == 'negative']
+    ## danish:
+    result = create_dictionary(words_da)
+    pos_tweets_da = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_da = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_da = [tweet for tweet in result if result[tweet] == 'negative']
+
+    ## finnish:
+    result = create_dictionary(words_fi)
+    pos_tweets_fi = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_fi = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_fi = [tweet for tweet in result if result[tweet] == 'negative']
+
+    ## norvegian:
+    result = create_dictionary(words_no)
+    pos_tweets_no = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_no = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_no = [tweet for tweet in result if result[tweet] == 'negative']
+
+    ## swedish:
+    result = create_dictionary(words_sw)
+    pos_tweets_sw = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_sw = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_sw = [tweet for tweet in result if result[tweet] == 'negative']
+
+    ## all languages:
+    result = create_dictionary(all_words)
+    pos_tweets_global = [tweet for tweet in result if result[tweet] == 'positive']
+    neu_tweets_global = [tweet for tweet in result if result[tweet] == 'neutral']
+    neg_tweets_global = [tweet for tweet in result if result[tweet] == 'negative']
 
     ## What do we do with it now? a plot?
 
-    print("positive tweets: ", len(pos_tweets))
-    print("neutral tweets: ", len(neu_tweets))
-    print("negative tweets: ", len(neg_tweets))
+    print("positive tweets percentage:")
+    print("all languages: ", len(pos_tweets_global)/len(all_words), "english: ", len(pos_tweets_en)/len(words_en), "danish: ", len(pos_tweets_da)/len(words_da), "finnish: ", len(pos_tweets_fi)/len(words_fi), "norvegian: ", len(pos_tweets_no)/len(words_no), "swedish: ", len(pos_tweets_sw)/len(words_sw))
+    print("neutral tweets percentage:")
+    print("all languages: ", len(neu_tweets_global)/len(all_words), "english: ", len(neu_tweets_en)/len(words_en), "danish: ", len(neu_tweets_da)/len(words_da), "finnish: ", len(neu_tweets_fi)/len(words_fi), "norvegian: ", len(neu_tweets_no)/len(words_no), "swedish: ", len(neu_tweets_sw)/len(words_sw))
+    print("negative tweets percentage:")
+    print("all languages: ", len(neg_tweets_global)/len(all_words), "english: ", len(neg_tweets_en)/len(words_en), "danish: ", len(neg_tweets_da)/len(words_da), "finnish: ", len(neg_tweets_fi)/len(words_fi), "norvegian: ", len(neg_tweets_no)/len(words_no), "swedish: ", len(neg_tweets_sw)/len(words_sw))
     
 if __name__ == "__main__": main()
