@@ -216,6 +216,7 @@ def sentimentAnalysis(tweet_list, scores_dict):
 
 
 def main(db_name='tweets'):
+    a=0
     scores_dict = create_senti_emoji_dict()
     connection = pymongo.MongoClient("mongodb://localhost:20000")
     db = connection[db_name]
