@@ -32,11 +32,11 @@ def main():
     pos_fi, neg_fi = read_sentistrength_file('textfiles/tweets_fi+results.txt')
     pos_sv, neg_sv = read_sentistrength_file('textfiles/tweets_sv+results.txt')
 
-    print("English:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_en, neg_en, pos_en+neg_en))
-    print("Finnish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_fi, neg_fi, pos_fi+neg_fi))
-    print("Danish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_da, neg_da, pos_da+neg_da))
-    print("Norwegian:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_no, neg_no, pos_no+neg_no))
-    print("Swedish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_sv, neg_sv, pos_sv+neg_sv))
+    print("English:\nPositive: {}\tNegative: {}\tnormalized value: {}\n".format(pos_en, neg_en, (pos_en+neg_en)/5))
+    print("Finnish:\nPositive: {}\tNegative: {}\tnormalized value: {}\n".format(pos_fi, neg_fi, (pos_fi+neg_fi)/5))
+    print("Danish:\nPositive: {}\tNegative: {}\tnormalized value: {}\n".format(pos_da, neg_da, (pos_da+neg_da)/5))
+    print("Norwegian:\nPositive: {}\tNegative: {}\tnormalized value: {}\n".format(pos_no, neg_no, (pos_no+neg_no)/5))
+    print("Swedish:\nPositive: {}\tNegative: {}\tnormalized value: {}\n".format(pos_sv, neg_sv, (pos_sv+neg_sv)/5))
 
 
 if __name__ == "__main__": main()
