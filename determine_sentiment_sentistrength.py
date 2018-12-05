@@ -32,15 +32,11 @@ def main():
     pos_fi, neg_fi = read_sentistrength_file('textfiles/tweets_fi+results.txt')
     pos_sv, neg_sv = read_sentistrength_file('textfiles/tweets_sv+results.txt')
 
-    print("English:\nPositive: ", pos_en, "\tNegative: ", neg_en)
-    print()
-    print("Finnish:\nPositive: ", pos_fi, "\tNegative: ", neg_fi)
-    print()
-    print("Danish:\nPositive: ", pos_da, "\tNegative: ", neg_da)
-    print()
-    print("Norwegian:\nPositive: ", pos_no, "\tNegative: ", neg_no)
-    print()
-    print("Swedish:\nPositive: ", pos_sv, "\tNegative: ", neg_sv)
+    print("English:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_en, neg_en, pos_en+neg_en))
+    print("Finnish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_fi, neg_fi, pos_fi+neg_fi))
+    print("Danish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_da, neg_da, pos_da+neg_da))
+    print("Norwegian:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_no, neg_no, pos_no+neg_no))
+    print("Swedish:\nPositive: {}\tNegative: {}\tGeneral: {}\n".format(pos_sv, neg_sv, pos_sv+neg_sv))
 
 
 if __name__ == "__main__": main()

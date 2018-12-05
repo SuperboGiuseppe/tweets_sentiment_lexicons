@@ -18,10 +18,10 @@ def tweets_to_txt_file(tweet_cursor, file_name, fields):
 
 
 def main():
-    # bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}, 'user.id': 3291286474}]}
+    bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}, {'user.id': 3291286474}]}
     tweets_en = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_en')
     tweets_da = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_da')
-    tweets_fi = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_fi')
+    tweets_fi = apply_query(bots_fi, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_fi')
     tweets_no = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_no')
     tweets_sv = apply_query({}, {'_id': 1, 'demojized_text': 1}, collection_name='tweets_sv')
 
