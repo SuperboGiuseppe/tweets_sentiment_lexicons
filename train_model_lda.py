@@ -46,12 +46,12 @@ def create_bow(lemmatized_data):
 
 
 def main():
-    raw_text = []
-    lda_corpus = []
-
-    sample_strings = twitter_samples.strings('tweets.20150430-223406.json')
-    for text in sample_strings:
-        raw_text.append(gensim.utils.simple_preprocess(text))
+    with open('lda_files/wikipedia_lemmatized.txt', 'r', encoding='utf-8') as wikipedia_corpus:
+        try:
+            corp = [wikipedia_corpus.readline().split() for line in wikipedia_corpus]
+        except FileNotFoundError as fnf:
+            print(wikipedia_corpus, fnf.strerror)
+    wikipedia_corpus.close()
 
     print('lemmatizing')
     for text in raw_text:

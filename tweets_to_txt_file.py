@@ -7,10 +7,13 @@ from mongodb_functions import apply_query
 
 def tweets_to_txt_file(tweet_cursor, file_name, fields):
     with open(file_name, "w+", encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=fields, delimiter='\t')
-        writer.writeheader()
-        for tweet in tweet_cursor:
-            writer.writerow(tweet)
+        try:
+            writer = csv.DictWriter(file, fieldnames=fields, delimiter='\t')
+            writer.writeheader()
+            for tweet in tweet_cursor:
+                writer.writerow(tweet)
+        except FileNotFoundError as fnf:
+            print(file_name, fnf.strerror)
     file.close()
 
 
