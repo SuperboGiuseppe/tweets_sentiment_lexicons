@@ -1,8 +1,6 @@
 import csv
 import re
 import string
-
-import emoji
 import pymongo
 
 # Source: http://stackoverflow.com/questions/19790188/expanding-english-language-contractions-in-python
@@ -130,21 +128,6 @@ contractions = {
 tweet_text = dict()
 
 
-def demojize(text):
-    """
-    Convert all emojis in the passed string in text format (i.e. :emoji:)
-    :param text: string to be demojized
-    :return: demojized string
-    """
-    if text is not None:
-        try:
-            emoji_text = emoji.demojize(text)
-        except Exception as e:
-            print(e)
-            return False
-        return emoji_text
-
-
 # read SentiWordNet
 def create_senti_emoji_dict():
     scores_file = open("SentiWordNet.txt", "r")
@@ -158,14 +141,6 @@ def create_senti_emoji_dict():
             word = tmp[4].split("#")
             scores_dict[str(word[0])] = float(tmp[2]) - float(tmp[3])
 
-    # read in emoji dictionary
-    reader = csv.reader(open('EmojiSentiment.csv'))
-    emojiDict = dict()
-
-    # add emoji scores to the dictionary
-    for row in reader:
-        emojiDict.update({row[0]: float(row[1])})
-    scores_dict.update(emojiDict);
     return scores_dict
 
 
@@ -196,9 +171,7 @@ def tokenizeText(line, wordNet_dict):
         tmp_words = tmp_words.translate(replace_punctuation)
         tmp_word = tmp_words.split()
         final_tokenized_list.extend(tmp_word)
-    for token in final_tokenized_list:
-        returnList.append(demojize(token))
-    return returnList
+    return final_tokenized_list
 
 
 # returns the score of one tweet
@@ -228,28 +201,27 @@ def main(db_name='tweets'):
     tweets_sv = db['tweets_sv']
     try:
         for tweet in tweets_da.find():
-            tokenized_tweets = tokenizeText(clean_tweet(tweet["translated_text"]), scores_dict)
+            tokenized_tweets = tokenizeText(clean_tweet(tweet["demojized_text"]), scores_dict)
             sentiScore = sentimentAnalysis(tokenized_tweets, scores_dict)
             tweets_da.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
         for tweet in tweets_fi.find(bots_fi):
-            tokenized_tweets = tokenizeText(clean_tweet(tweet["translated_text"]), scores_dict)
+            tokenized_tweets = tokenizeText(clean_tweet(tweet["demojized_text"]), scores_dict)
             sentiScore = sentimentAnalysis(tokenized_tweets, scores_dict)
             tweets_fi.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
         for tweet in tweets_en.find():
-            tokenized_tweets = tokenizeText(clean_tweet(tweet["text"]), scores_dict)
+            tokenized_tweets = tokenizeText(clean_tweet(tweet["demojized_text"]), scores_dict)
             sentiScore = sentimentAnalysis(tokenized_tweets, scores_dict)
             tweets_en.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
         for tweet in tweets_no.find():
-            tokenized_tweets = tokenizeText(clean_tweet(tweet["translated_text"]), scores_dict)
+            tokenized_tweets = tokenizeText(clean_tweet(tweet["demojized_text"]), scores_dict)
             sentiScore = sentimentAnalysis(tokenized_tweets, scores_dict)
             tweets_no.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
         for tweet in tweets_sv.find():
-            tokenized_tweets = tokenizeText(clean_tweet(tweet["translated_text"]), scores_dict)
+            tokenized_tweets = tokenizeText(clean_tweet(tweet["demojized_text"]), scores_dict)
             sentiScore = sentimentAnalysis(tokenized_tweets, scores_dict)
             tweets_sv.update({"_id": tweet["_id"]}, {'$set': {"SentiWordNet": sentiScore}})
     except ValueError:
         print(ValueError)
-
 
 if __name__ == '__main__':
     main()
