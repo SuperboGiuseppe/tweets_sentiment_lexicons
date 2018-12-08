@@ -20,31 +20,32 @@ def analyze_tweets(tweets):
     :param tweets: tweets to be analyzed
     :return: anlysis result
     """
-    if type(tweets) is not list or tweets[0] == "" or len(tweets) == 0:
+    if (type(tweets) is not list and type(tweets) is not str) or tweets[0] == "" or len(tweets) == 0:
         raise ValueError("tweets must be a non-empty string or non-empty list of strings!")
     try:
-        analysis = lexicon.analyze(tweets, normalize=True)
+        analysis = lexicon.analyze(tweets, normalize=False)
         return analysis
     except Exception as e:
         print(e)
 
 
 def main():
-    tweets_en = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_en')
-    tweets_en = [text['demojized_text'] for text in tweets_en]
+    tweets_en = mdb.apply_query({}, {'_id': 0, 'tokenized_text_MWETokenizer': 1}, collection_name='tweets_en')
+    tweets_en = [token for tweet in tweets_en for token in tweet['tokenized_text_MWETokenizer']]
 
-    tweets_da = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_da')
-    tweets_da = [text['demojized_text'] for text in tweets_da]
+    tweets_da = mdb.apply_query({}, {'_id': 0, 'tokenized_text_MWETokenizer': 1}, collection_name='tweets_da')
+    tweets_da = [token for tweet in tweets_da for token in tweet['tokenized_text_MWETokenizer']]
 
-    bots_fi = {'$or': [{'user.id': 550261599}, {'user.id': 2831214083}, {'user.id': 3291286474}]}
-    tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_fi')
-    tweets_fi = [text['demojized_text'] for text in tweets_fi]
+    bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}, {'user.id': 3291286474}]}
+    tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'tokenized_text_MWETokenizer': 1}, collection_name='tweets_fi')
+    tweets_fi = [token for tweet in tweets_fi for token in tweet['tokenized_text_MWETokenizer']]
 
-    tweets_no = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_no')
-    tweets_no = [text['demojized_text'] for text in tweets_no]
+    tweets_no = mdb.apply_query({}, {'_id': 0, 'tokenized_text_MWETokenizer': 1}, collection_name='tweets_no')
+    tweets_no = [token for tweet in tweets_no for token in tweet['tokenized_text_MWETokenizer']]
 
-    tweets_sv = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_sv')
-    tweets_sv = [text['demojized_text'] for text in tweets_sv]
+    tweets_sv = mdb.apply_query({}, {'_id': 0, 'tokenized_text_MWETokenizer': 1}, collection_name='tweets_sv')
+    tweets_sv = [token for tweet in tweets_sv for token in tweet['tokenized_text_MWETokenizer']]
+
     try:
         analysis_en = analyze_tweets(tweets_en)
         analysis_da = analyze_tweets(tweets_da)

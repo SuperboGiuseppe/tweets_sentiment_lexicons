@@ -85,6 +85,10 @@ def main():
 
     plt.draw_bar_plot(di, 'Distribution Of Words', 'Word', 'Occurrences', 'distribution_of_words.svg',
                       x_ticks_rotation=90)
+    plt.draw_bar_plot(di, 'Distribution Of Words', 'Word', 'Occurrences', 'distribution_of_words.pdf',
+                      x_ticks_rotation=90)
+    plt.draw_bar_plot(di, 'Distribution Of Words', 'Word', 'Occurrences', 'distribution_of_words.png',
+                      x_ticks_rotation=90)
 
 
 if __name__ == "__main__": main()
