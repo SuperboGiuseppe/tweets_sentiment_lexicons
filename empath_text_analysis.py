@@ -3,6 +3,7 @@
 
 __author__ = "Emre Arkan"
 __copyright__ = "Copyright 2018, Project for Natural Language Processing and Text Mining, University of Oulu"
+__email__ = "emrearkan@outlook.de"
 
 import operator
 
@@ -22,7 +23,7 @@ def analyze_tweets(tweets):
     if type(tweets) is not list or tweets[0] == "" or len(tweets) == 0:
         raise ValueError("tweets must be a non-empty string or non-empty list of strings!")
     try:
-        analysis = lexicon.analyze(tweets)
+        analysis = lexicon.analyze(tweets, normalize=True)
         return analysis
     except Exception as e:
         print(e)
@@ -35,7 +36,7 @@ def main():
     tweets_da = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_da')
     tweets_da = [text['demojized_text'] for text in tweets_da]
 
-    bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}]}
+    bots_fi = {'$or': [{'user.id': 550261599}, {'user.id': 2831214083}, {'user.id': 3291286474}]}
     tweets_fi = mdb.apply_query(bots_fi, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_fi')
     tweets_fi = [text['demojized_text'] for text in tweets_fi]
 
@@ -60,11 +61,11 @@ def main():
         di_no = dict((x, y) for x, y in sorted_no[:20])
         sorted_sv = sorted(analysis_sv.items(), key=operator.itemgetter(1), reverse=True)
         di_sv = dict((x, y) for x, y in sorted_sv[:20])
-        print(di_en)
-        print(di_da)
-        print(di_fi)
-        print(di_no)
-        print(di_sv)
+        print('English:', di_en)
+        print('Danish:', di_da)
+        print('Finnish:', di_fi)
+        print('Norwegian:', di_no)
+        print('Swedish:', di_sv)
     except ValueError as ve:
         print(ve)
 

@@ -3,6 +3,7 @@
 
 __author__ = "Emre Arkan"
 __copyright__ = "Copyright 2018, Project for Natural Language Processing and Text Mining, University of Oulu"
+__email__ = "emrearkan@outlook.de"
 
 from tweepy import OAuthHandler
 from tweepy import Stream
