@@ -3,6 +3,7 @@
 
 __author__ = "Emre Arkan"
 __copyright__ = "Copyright 2018, Project for Natural Language Processing and Text Mining, University of Oulu"
+__email__ = "emrearkan@outlook.de"
 
 import emoji
 import pymongo
@@ -23,7 +24,7 @@ with open('emojis.txt', 'r') as f:
             emoji_text = emoji.demojize(c)
             if c != '\n' and c != ' ' and emoji_text[0] == ":" and emojis.find_one({'emoji_text': emoji_text}) is None:
                 try:
-                    emojis.insert({'emoji_text': emoji_text, 'emoji': c})
+                    emojis.insert({'emoji_text': emoji_text.strip(':').replace('_',' '), 'emoji': c})
                 except DuplicateKeyError:
                     continue
         print("Emojis have been imported successfully.")
@@ -58,7 +59,7 @@ def main():
         else:
             tweets = collection.find({}, {'_id': 1, 'translated_text': 1})
         for tweet in tweets:
-            demojized_text = demojize(list(dict(tweet).values())[1])
+            demojized_text = demojize(list(dict(tweet).values())[1]).replace(':', ' ').replace('_', ' ').replace('-', ' ')
             collection.update({'_id': tweet['_id']}, {'$set': {'demojized_text': demojized_text}})
 
 
