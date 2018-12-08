@@ -53,8 +53,8 @@ def main():
     result = create_dictionary(words_en)
     mean_en = 0
     for i in result:
-        mean_en += i[tweet][0]
-    mean_en = mean_en/len(result)
+        mean_en += result[i][0]
+    mean_en = mean_en / len(result)
     pos_tweets_en = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_en = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_en = [tweet for tweet in result if result[tweet][1] == 'negative']
@@ -63,8 +63,8 @@ def main():
     result = create_dictionary(words_da)
     mean_da = 0
     for i in result:
-        mean_da += i[tweet][0]
-    mean_da = mean_da/len(result)
+        mean_da += result[i][0]
+    mean_da = mean_da / len(result)
     pos_tweets_da = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_da = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_da = [tweet for tweet in result if result[tweet][1] == 'negative']
@@ -73,8 +73,8 @@ def main():
     result = create_dictionary(words_fi)
     mean_fi = 0
     for i in result:
-        mean_fi += i[tweet][0]
-    mean_fi = mean_fi/len(result)
+        mean_fi += result[i][0]
+    mean_fi = mean_fi / len(result)
     pos_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'negative']
@@ -83,18 +83,18 @@ def main():
     result = create_dictionary(words_no)
     mean_no = 0
     for i in result:
-        mean_no += i[tweet][0]
-    mean_no = mean_no/len(result)
+        mean_no += result[i][0]
+    mean_no = mean_no / len(result)
     pos_tweets_no = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_no = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_no = [tweet for tweet in result if result[tweet][1] == 'negative']
 
     ## swedish:
     result = create_dictionary(words_sv)
-    mean_sw = 0
+    mean_sv = 0
     for i in result:
-        mean_sw += i[tweet][0]
-    mean_sw = mean_sw/len(result)
+        mean_sv += result[i][0]
+    mean_sv = mean_sv / len(result)
     pos_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'negative']
@@ -103,8 +103,8 @@ def main():
     result = create_dictionary(all_words)
     mean_global = 0
     for i in result:
-        mean_global += i[tweet][0]
-    mean_global = mean_global/len(result)
+        mean_global += result[i][0]
+    mean_global = mean_global / len(result)
     pos_tweets_global = [tweet for tweet in result if result[tweet][1] == 'positive']
     neu_tweets_global = [tweet for tweet in result if result[tweet][1] == 'neutral']
     neg_tweets_global = [tweet for tweet in result if result[tweet][1] == 'negative']
@@ -129,6 +129,7 @@ def main():
     print("danish score: ", mean_da)
     print("finnish score: ", mean_fi)
     print("norvegian score: ", mean_no)
-    print("swedish score: ", mean_sw)
-    
+    print("swedish score: ", mean_sv)
+
+
 if __name__ == "__main__": main()
