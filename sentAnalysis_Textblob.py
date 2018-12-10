@@ -3,9 +3,8 @@ Nicola Zotto
 """
 
 import textblob as tb
-
 import mongodb_functions as mdb
-
+import draw_bar_plot as plt
 
 def create_dictionary(tweet_list):
     """
@@ -130,6 +129,9 @@ def main():
     print("finnish score: ", mean_fi)
     print("norvegian score: ", mean_no)
     print("swedish score: ", mean_sv)
+
+    dict_final = {"All languages":mean_global, "English":mean_en, "Danish":mean_da, "Finnish":mean_fi, "Norvegian":mean_no, "Swedish":mean_sv}
+    plt.draw_bar_plot(dict_final, 'Average scores by language', '', '', 'textblob_plot.svg', x_ticks_rotation=90)
 
 
 if __name__ == "__main__": main()
