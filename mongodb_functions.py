@@ -44,6 +44,20 @@ def import_tweets(file_path, db_name='tweets', collection_name='tweet_collection
     except ValueError:
         print("Decoding JSON has failed")
 
+def add_collection(name_collection, db_name='tweets'):
+    try:
+        connection = pymongo.MongoClient("mongodb://localhost:20000")
+        print("Connecting to", db_name, "database...")
+        db = connection[db_name]
+        db.create_collection(name_collection)
+    except ConnectionFailure as cf:
+        print(cf.__str__())
+    except FileNotFoundError as fnf:
+        print(fnf.strerror)
+    except ValueError:
+        print("Decoding JSON has failed")
+
+
 
 def export_tweets_into_collection(filter, projection, to_collection_name, db_name='tweets',
                                   from_collection_name='tweet_collection'):
