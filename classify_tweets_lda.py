@@ -83,4 +83,5 @@ def main():
     for index, prob in sorted(test_sv, key=lambda var: -1 * var[1]):
         print("Probablity: {}\t Topic: {}".format(prob, lda_model.print_topic(index, 5)))
 
+
 if __name__ == "__main__": main()
