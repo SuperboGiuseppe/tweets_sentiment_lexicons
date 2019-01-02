@@ -75,10 +75,10 @@ def tokenizer_composedword(corpus_cursor, field):
     res = []
     tokenizer = MWETokenizer(retrieve_composedword(corpus))
     for x in range(len(corpus)):
-        print(tokenizer.tokenize(corpus[x].split()))
-        temp = tokenizer.tokenize(corpus[x].split())
-        temp2 = temp.copy()
-        #x = 0
+        tweet = corpus[x]
+        tweet = tweet.replace("https ", "https:")
+        print(tokenizer.tokenize(tweet.split()))
+        temp = tokenizer.tokenize(tweet.split())
         temp = [item for item in temp if item[0] != '@' and str(item).find('https') == -1 and item not in stop_words and item not in punctuation]
         for i, y in enumerate(temp):
             if y[0] == '#':
@@ -91,7 +91,6 @@ def tokenizer_composedword(corpus_cursor, field):
                     flag = 1
                 temp[i] = temp[i].replace(":","")
                 temp[i] = temp[i].replace("_","")
-                #x += len(wordninja.split(temp2[x])) - 1
                 if flag == 1:
                     remove_index = len(wordninja.split(temp[i]))
                     temp[i:i] = wordninja.split(temp[i])
@@ -134,9 +133,6 @@ def update_database(ListID, List_Tokens, collection_name):
 
 
 def composed_word_handler():
-    """
-
-    """
     corpus_cursor_en = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_en')
     corpus_cursor_da = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_da')
     corpus_cursor_no = mdb.apply_query({}, {'_id': 0, 'demojized_text': 1}, collection_name='tweets_no')

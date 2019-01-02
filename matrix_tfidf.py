@@ -1,7 +1,20 @@
 import mongodb_functions as mdb
 import math
 
+"""
+Giuseppe Superbo
+
+Step 6.2: Build TF-IDF Matrix
+"""
+
 def calculateTF(words, corpus):
+    '''
+    This function builds the term frequency matrix by counting the frequency of a specific
+    word inside each document of the corpus
+    :param words: Dictionary which contains only the words of the corpus
+    :param corpus: Corpus to be analyzed
+    :return: tfmatrix: Term Frequency Matrix
+    '''
     print("TF")
     tfmatrix = {}
     for y in range(len(corpus)):
@@ -19,6 +32,13 @@ def calculateTF(words, corpus):
 
 
 def calculateIDF(words, corpus):
+    '''
+    This function build the inverse document frequency matrix by applying the IDF formula
+    upon all the words of the corpus
+    :param words: Dictionary which contains only the words of the corpus
+    :param corpus: Corpus to be analyzed
+    :return: idfmatrix: Inverse document frequency matrix
+    '''
     print("IDF")
     idfmatrix = {}
     for y in range(len(corpus)):
@@ -32,12 +52,24 @@ def calculateIDF(words, corpus):
     return idfmatrix
 
 def document_frequency(word, corpus):
+    '''
+    This function calculates how many times a specific word occures in the corpus
+    :param word: Dictionary which contains only the words of the corpus
+    :param corpus: Corpus to be analyzed
+    :return: res: Number of the occureances of the specific word
+    '''
     res = 0
     for x in range(len(corpus)):
         res += corpus[x].count(word)
     return res
 
 def calculateTFIDF(words, corpus):
+    '''
+    This function build the tf-idf matrix by using the tf and idf functions.
+    :param words: Dictionary which contains only the words of the corpus
+    :param corpus: Corpus to be analyzed
+    :return: tf_idf: TF_IDF matrix
+    '''
     tf = calculateTF(words, corpus)
     idf = calculateIDF(words, corpus)
     tf_idf = {}
@@ -57,6 +89,12 @@ def calculateTFIDF(words, corpus):
     return tf_idf
 
 def extract_list_tokens(cursor):
+    '''
+    As mongodb produces a cursor as the result of the query, this function converts the cursor
+    in a list. In this way it is possible to use in the traditional way our corpus.
+    :param cursor: Result of the mongodb query
+    :return: list_corpus: Corpus to be analyzed
+    '''
     list_corpus = []
     dict = list(cursor)
     for subVal in dict:
@@ -64,6 +102,11 @@ def extract_list_tokens(cursor):
     return list_corpus
 
 def word_list(list_tokens):
+    '''
+    This function creates a list of all the words of the corpus.
+    :param list_tokens: Split corpus in tokens
+    :return: res: List of unique words of the corpus
+    '''
     res = []
     for x in range(len(list_tokens)):
         for y in range(len(list_tokens[x])):
@@ -72,6 +115,11 @@ def word_list(list_tokens):
     return res
 
 def addmatrix_database(matrix, collection_name):
+    '''
+    This procedure adds a matrix to the DB collection
+    :param matrix: Matrix to be uploaded
+    :param collection_name: Collection where the matrix is going to be saved
+    '''
     collection = mdb.open_collection(collection_name, 'tweets')
     collection.insert(matrix, check_keys=False)
 

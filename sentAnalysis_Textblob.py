@@ -19,8 +19,8 @@ def create_dictionary(tweet_list):
 
 
 def get_tweet_sentiment(tweet):
-    """ 
-    Classifies sentiment of a single tweet using textblob's sentiment method 
+    """
+    Classifies sentiment of a single tweet using textblob's sentiment method
     :param tweet: a non-tokenized tweets.
     :return: a tuple, the sentiment score and the perceived sentiment of the inputed tweet
     """
