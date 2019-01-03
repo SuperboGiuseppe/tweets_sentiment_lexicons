@@ -32,6 +32,17 @@ def get_tweet_sentiment(tweet):
     else:
         return (tweetblob.sentiment.polarity, 'negative')
 
+def update_database(Dict_Results, collection_name):
+    """
+    This procedure updates the DB with the textblob results for each tweet
+    :param collection_name: Name of the collection to be updated
+    :param Dict_Results: Dictionary of all the results of tweets
+    """
+    collection = mdb.open_collection(collection_name, 'tweets')
+    collection.update_many({}, {'$unset' : {'Textblob':1}})
+    keys = list(Dict_Results.keys())
+    for x in keys:
+        collection.update({'demojized_text': x}, {'$set': {'Textblob': Dict_Results[x]}})
 
 def main():
     bots_fi = {'$nor': [{'user.id': 550261599}, {'user.id': 2831214083}, {'user.id': 3291286474}]}
@@ -49,54 +60,59 @@ def main():
     all_words = words_en + words_da + words_fi + words_no + words_sv
 
     ## english:
-    result = create_dictionary(words_en)
+    result_en = create_dictionary(words_en)
+    update_database(result_en, 'tweets_en')
     mean_en = 0
-    for i in result:
-        mean_en += result[i][0]
-    mean_en = mean_en / len(result)
-    pos_tweets_en = [tweet for tweet in result if result[tweet][1] == 'positive']
-    neu_tweets_en = [tweet for tweet in result if result[tweet][1] == 'neutral']
-    neg_tweets_en = [tweet for tweet in result if result[tweet][1] == 'negative']
+    for i in result_en:
+        mean_en += result_en[i][0]
+    mean_en = mean_en / len(result_en)
+    pos_tweets_en = [tweet for tweet in result_en if result_en[tweet][1] == 'positive']
+    neu_tweets_en = [tweet for tweet in result_en if result_en[tweet][1] == 'neutral']
+    neg_tweets_en = [tweet for tweet in result_en if result_en[tweet][1] == 'negative']
 
     ## danish:
-    result = create_dictionary(words_da)
+    result_da = create_dictionary(words_da)
+    update_database(result_da, 'tweets_da')
     mean_da = 0
-    for i in result:
-        mean_da += result[i][0]
-    mean_da = mean_da / len(result)
-    pos_tweets_da = [tweet for tweet in result if result[tweet][1] == 'positive']
-    neu_tweets_da = [tweet for tweet in result if result[tweet][1] == 'neutral']
-    neg_tweets_da = [tweet for tweet in result if result[tweet][1] == 'negative']
+    for i in result_da:
+        mean_da += result_da[i][0]
+    mean_da = mean_da / len(result_da)
+    pos_tweets_da = [tweet for tweet in result_da if result_da[tweet][1] == 'positive']
+    neu_tweets_da = [tweet for tweet in result_da if result_da[tweet][1] == 'neutral']
+    neg_tweets_da = [tweet for tweet in result_da if result_da[tweet][1] == 'negative']
 
     ## finnish:
-    result = create_dictionary(words_fi)
+    result_fi = create_dictionary(words_fi)
+    update_database(result_fi, 'tweets_fi')
     mean_fi = 0
-    for i in result:
-        mean_fi += result[i][0]
-    mean_fi = mean_fi / len(result)
-    pos_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'positive']
-    neu_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'neutral']
-    neg_tweets_fi = [tweet for tweet in result if result[tweet][1] == 'negative']
+    for i in result_fi:
+        mean_fi += result_fi[i][0]
+    mean_fi = mean_fi / len(result_fi)
+    pos_tweets_fi = [tweet for tweet in result_fi if result_fi[tweet][1] == 'positive']
+    neu_tweets_fi = [tweet for tweet in result_fi if result_fi[tweet][1] == 'neutral']
+    neg_tweets_fi = [tweet for tweet in result_fi if result_fi[tweet][1] == 'negative']
 
     ## norvegian:
-    result = create_dictionary(words_no)
+    result_no = create_dictionary(words_no)
+    update_database(result_no, 'tweets_no')
     mean_no = 0
-    for i in result:
-        mean_no += result[i][0]
-    mean_no = mean_no / len(result)
-    pos_tweets_no = [tweet for tweet in result if result[tweet][1] == 'positive']
-    neu_tweets_no = [tweet for tweet in result if result[tweet][1] == 'neutral']
-    neg_tweets_no = [tweet for tweet in result if result[tweet][1] == 'negative']
+    for i in result_no:
+        mean_no += result_no[i][0]
+    mean_no = mean_no / len(result_no)
+    pos_tweets_no = [tweet for tweet in result_no if result_no[tweet][1] == 'positive']
+    neu_tweets_no = [tweet for tweet in result_no if result_no[tweet][1] == 'neutral']
+    neg_tweets_no = [tweet for tweet in result_no if result_no[tweet][1] == 'negative']
 
     ## swedish:
-    result = create_dictionary(words_sv)
+    result_sv = create_dictionary(words_sv)
+    update_database(result_sv, 'tweets_sv')
     mean_sv = 0
-    for i in result:
-        mean_sv += result[i][0]
-    mean_sv = mean_sv / len(result)
-    pos_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'positive']
-    neu_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'neutral']
-    neg_tweets_sv = [tweet for tweet in result if result[tweet][1] == 'negative']
+    for i in result_sv:
+        mean_sv += result_sv[i][0]
+    mean_sv = mean_sv / len(result_sv)
+    pos_tweets_sv = [tweet for tweet in result_sv if result_sv[tweet][1] == 'positive']
+    neu_tweets_sv = [tweet for tweet in result_sv if result_sv[tweet][1] == 'neutral']
+    neg_tweets_sv = [tweet for tweet in result_sv if result_sv[tweet][1] == 'negative']
 
     ## all languages:
     result = create_dictionary(all_words)
