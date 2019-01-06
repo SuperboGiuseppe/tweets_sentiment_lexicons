@@ -23,7 +23,7 @@ def analyze_tweets(tweets):
     if (type(tweets) is not list and type(tweets) is not str) or tweets[0] == "" or len(tweets) == 0:
         raise ValueError("tweets must be a non-empty string or non-empty list of strings!")
     try:
-        analysis = lexicon.analyze(tweets, normalize=False)
+        analysis = lexicon.analyze(tweets, normalize=True)
         return analysis
     except Exception as e:
         print(e)
@@ -52,16 +52,17 @@ def main():
         analysis_fi = analyze_tweets(tweets_fi)
         analysis_no = analyze_tweets(tweets_no)
         analysis_sv = analyze_tweets(tweets_sv)
+        num_of_topics = 20
         sorted_en = sorted(analysis_en.items(), key=operator.itemgetter(1), reverse=True)
-        di_en = dict((x, y) for x, y in sorted_en[:20])
+        di_en = dict((x, y) for x, y in sorted_en[:num_of_topics] if y != 0)
         sorted_da = sorted(analysis_da.items(), key=operator.itemgetter(1), reverse=True)
-        di_da = dict((x, y) for x, y in sorted_da[:20])
+        di_da = dict((x, y) for x, y in sorted_da[:num_of_topics] if y != 0)
         sorted_fi = sorted(analysis_fi.items(), key=operator.itemgetter(1), reverse=True)
-        di_fi = dict((x, y) for x, y in sorted_fi[:20])
+        di_fi = dict((x, y) for x, y in sorted_fi[:num_of_topics] if y != 0)
         sorted_no = sorted(analysis_no.items(), key=operator.itemgetter(1), reverse=True)
-        di_no = dict((x, y) for x, y in sorted_no[:20])
+        di_no = dict((x, y) for x, y in sorted_no[:num_of_topics] if y != 0)
         sorted_sv = sorted(analysis_sv.items(), key=operator.itemgetter(1), reverse=True)
-        di_sv = dict((x, y) for x, y in sorted_sv[:20])
+        di_sv = dict((x, y) for x, y in sorted_sv[:num_of_topics] if y != 0)
         print('English:', di_en)
         print('Danish:', di_da)
         print('Finnish:', di_fi)
