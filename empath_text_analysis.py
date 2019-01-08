@@ -11,6 +11,8 @@ from empath import Empath
 
 import mongodb_functions as mdb
 
+import io
+
 lexicon = Empath()
 
 
@@ -47,6 +49,7 @@ def main():
     tweets_sv = [token for tweet in tweets_sv for token in tweet['tokenized_text_MWETokenizer']]
 
     try:
+        buffer = io.StringIO()
         analysis_en = analyze_tweets(tweets_en)
         analysis_da = analyze_tweets(tweets_da)
         analysis_fi = analyze_tweets(tweets_fi)
@@ -63,13 +66,14 @@ def main():
         di_no = dict((x, y) for x, y in sorted_no[:num_of_topics] if y != 0)
         sorted_sv = sorted(analysis_sv.items(), key=operator.itemgetter(1), reverse=True)
         di_sv = dict((x, y) for x, y in sorted_sv[:num_of_topics] if y != 0)
-        print('English:', di_en)
-        print('Danish:', di_da)
-        print('Finnish:', di_fi)
-        print('Norwegian:', di_no)
-        print('Swedish:', di_sv)
+        print('English:', di_en, file = buffer)
+        print('Danish:', di_da, file = buffer)
+        print('Finnish:', di_fi, file = buffer)
+        print('Norwegian:', di_no, file = buffer)
+        print('Swedish:', di_sv, file = buffer)
     except ValueError as ve:
-        print(ve)
+        print(ve, file = buffer)
 
+    return buffer
 
 if __name__ == '__main__': main()

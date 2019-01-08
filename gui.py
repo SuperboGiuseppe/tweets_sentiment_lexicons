@@ -3,6 +3,7 @@ from tkinter import ttk
 from PyQt4 import QtGui
 import mongodb_functions as mdb
 import io
+import empath_text_analysis as emp
 
 """
 Giuseppe Superbo
@@ -106,6 +107,16 @@ def main_window():
             frame.language_image = PhotoImage(file='plots/textblob_plot.png')
             frame.canvas.create_image(400, 325, image=frame.language_image, anchor=CENTER)
             frame.canvas.update()
+        if (clicked_tab == 5):
+            frame.language_image = PhotoImage(file='images/sentistrength.png')
+            frame.canvas.create_image(400, 325, image=frame.language_image, anchor=CENTER)
+            frame.canvas.update()
+        if (clicked_tab == 6):
+            frame.language_image = PhotoImage(file='images/sentiword.png')
+            frame.canvas.create_image(400, 325, image=frame.language_image, anchor=CENTER)
+            frame.canvas.update()
+        if (clicked_tab == 7):
+            text_screen(7)
 
 
     def text_screen(tab):
@@ -145,7 +156,10 @@ def main_window():
             """
             text.configure(state='normal')
             text.delete(1.0,END)
-            buffer = extract_db(collection)
+            if "tweets" in collection or "tfidf" in collection:
+                buffer = extract_db(collection)
+            else:
+                buffer = emp.main()
             text.insert('end', str(buffer.getvalue()))
             text.configure(state='disabled')
 
@@ -156,14 +170,16 @@ def main_window():
         text = Text(text_frame, state='disabled', width=130, height=36)
         if(tab==0):
             update_textarea("tweets_en")
-        else:
+            options.grid(row=0, column=0)
+        if(tab==1):
             update_textarea("tfidf_en")
+            options.grid(row=0, column=0)
+        if(tab==7):
+            update_textarea("Empath")
         scrollbarY = Scrollbar(text_frame, command=text.yview, orient="vertical")
         text.grid(row=1,column=0, sticky=N+W+E+S)
         scrollbarY.grid(row=1, column=1, sticky=N+S)
-        #scrollbarY.pack(fill=Y, expand=True, side=RIGHT)
-        #text.pack(fill=BOTH, expand=True, side=LEFT)
-        options.grid(row=0, column=0)
+        #options.grid(row=0, column=0)
         frame.canvas.create_window((0,0), window = text_frame , anchor = "nw")
         text_frame.grid_rowconfigure(0, weight=1)
         text_frame.grid_columnconfigure(0, weight=1)
@@ -180,12 +196,18 @@ def main_window():
     tab3 = ttk.Frame(tabControl)
     tab4 = ttk.Frame(tabControl)
     tab5 = ttk.Frame(tabControl)
+    tab6 = ttk.Frame(tabControl)
+    tab7 = ttk.Frame(tabControl)
+    tab8 = ttk.Frame(tabControl)
     tabControl.add(tab1, text = "TweetsDB")
     tabControl.bind("<Button-1>", canvas_tab)
     tabControl.add(tab2, text = "TF-IDF Matrix")
     tabControl.add(tab3, text = "Language distribution")
     tabControl.add(tab4, text = "Words distribution")
     tabControl.add(tab5, text = "TextBlob results")
+    tabControl.add(tab6, text = "Sentistrength results")
+    tabControl.add(tab7, text = "SentiWordNet results")
+    tabControl.add(tab8, text = "Empath Results")
     tabControl.grid(row = 0)
     tabControl.pack(side = TOP , anchor = NW)
     frame = Frame(main)
