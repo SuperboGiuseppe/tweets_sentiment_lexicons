@@ -43,13 +43,19 @@ We use Yandex Translate API to translate tweets
 python translate_tweets.py
 ```
 
-### Use TweetTokenizer package to tokenize the tweet messages and remove all links and special characters, and draw histogram of the most common terms, excluding stop-words. 
+### Run the GUI 
 
 ```
----FILL HERE---
+In order to run the GUI, the mongodb framework must be launched previously with the correct db path.
+"$python3 gui.py" inside the project directory.
 ```
 
 ## Authors
-
------FILL HERE-----
+```
+Emre Arkan
+Katharina Geue
+Giuseppe Superbo
+Daniel Nguyen
+Nicola Zotto
+```
 
