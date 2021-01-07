@@ -13,7 +13,7 @@ identify==1.1.7
 idna==2.7
 importlib-metadata==0.6
 kiwisolver==1.0.1
-lxml==4.2.5
+lxml==4.6.2
 mathpy==0.3.0
 matplotlib==3.0.2
 nltk==3.4
